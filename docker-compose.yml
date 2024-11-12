@@ -1,0 +1,71 @@
+services:
+    rtch_web:
+        container_name: rtch_web
+        image: nginx:alpine  # Use the Nginx image
+        ports:
+            - "8001:80"  # Map port 8080 on the host to port 80 inside the container
+        volumes:
+            - ./:/var/www  # Mount the Laravel application directory
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Use our Nginx config
+        depends_on:
+            - rtch_app  # Ensure PHP-FPM is started before Nginx
+        networks:
+            - rtch-network  # Connect to the custom network
+
+    rtch_app:
+        container_name: rtch_app
+        build: .  # Build from the Dockerfile
+        depends_on:
+            - rtch_db
+        volumes:
+            - ./:/var/www  # Mount the Laravel application directory
+        networks:
+            - rtch-network  # Connect to the custom network
+        ports:
+            - "9000:9000"
+
+    rtch_db:
+        image: postgres
+        container_name: rtch_db
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - rtch_db:/var/lib/postgresql/data
+        networks:
+            - rtch-network
+        expose:
+            - 5432
+
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        restart: unless-stopped
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        ports:
+            - "8081:80"
+        networks:
+            - rtch-network
+
+
+    rtch_node:
+        container_name: rtch_node
+        image: node:20
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - rtch-network
+        command: bash -c "npm install && npm run build"
+# Define the custom network
+networks:
+    rtch-network:  # Create a custom network named 'rtch-network'
+        driver: bridge
+
+# Define the volume for MySQL data persistence
+volumes:
+    rtch_db:
