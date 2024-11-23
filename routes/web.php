@@ -1,10 +1,16 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $users = \App\Models\User::all()->toArray();
+    return view('welcome', compact('users'));
+});
+
+Route::post('/message', function (Request $request) {
+    return $request->all();
 });
 
 Route::get('/dashboard', function () {
