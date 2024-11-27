@@ -1,22 +1,18 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $users = \App\Models\User::all()->toArray();
-    return view('welcome', compact('users'));
-});
+Route::middleware(['auth', 'verified'])->group(function () {
+   Route::get('/', [ChatController::class, 'index'])->name('chat');
+   Route::get('/user/{id}', [ChatController::class, 'show'])->name('user');
+   Route::post('/user/{id}', [ChatController::class, 'store']);
 
-Route::post('/message', function (Request $request) {
-    $message = \App\Models\Message::create([
-        'sender_id' => auth()->id(),
-        'receiver_id' => $request->input('receiver_id'),
-        'text' => $request->input('message'),
-    ]);
-
-    return response()->json($message);
+   Route::get('/api/users', [UserController::class, 'index']);
+   Route::get('/api/messages/{id}', [ChatController::class, 'getMessages']);
+   Route::post('/api/messages/', [ChatController::class, 'storeMessages']);
 });
 
 Route::get('/dashboard', function () {

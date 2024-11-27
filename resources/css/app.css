@@ -1,3 +1,6 @@
+@import "./hously/tailwind.scss";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+

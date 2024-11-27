@@ -15,7 +15,7 @@ class UserApiController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(User::all());
+        //
     }
 
     /**
