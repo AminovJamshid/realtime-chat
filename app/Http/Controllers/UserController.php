@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class User extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return \App\Models\User::query()->all();
+        $users = User::query()->whereNot('id', auth()->id())->get();
+
+        return response()->json([
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -35,7 +41,7 @@ class User extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**
