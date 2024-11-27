@@ -10,7 +10,13 @@ Route::get('/', function () {
 });
 
 Route::post('/message', function (Request $request) {
-    return $request->all();
+    $message = \App\Models\Message::create([
+        'sender_id' => auth()->id(),
+        'receiver_id' => $request->input('receiver_id'),
+        'text' => $request->input('message'),
+    ]);
+
+    return response()->json($message);
 });
 
 Route::get('/dashboard', function () {
