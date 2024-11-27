@@ -34,7 +34,6 @@ function fn() {
             document.getElementById('preloader').style.opacity = '0';
         }, 350);
     }
-
     // Menus
     activateMenu();
     activateSidebarMenu();
@@ -176,7 +175,7 @@ if(document.getElementById("sidebar")){
 function windowScroll() {
     var navbar = document.getElementById("topnav");
     if(navbar === null) {
-        
+
     }else if( document.body.scrollTop >= 50 ||
     document.documentElement.scrollTop >= 50){
         navbar.classList.add("nav-sticky");
@@ -198,7 +197,7 @@ window.onscroll = function () {
 function scrollFunction() {
     var mybutton = document.getElementById("back-to-top");
     if(mybutton === null) {
-        
+
     }else if( document.body.scrollTop > 500 || document.documentElement.scrollTop > 500){
         mybutton.style.display = "block";
     }else {
@@ -234,7 +233,7 @@ try {
     function changeTheme(e){
         e.preventDefault()
         const htmlTag = document.getElementsByTagName("html")[0]
-        
+
         if (htmlTag.className.includes("dark")) {
             htmlTag.className = 'light'
         } else {
@@ -244,12 +243,12 @@ try {
 
     const switcher = document.getElementById("theme-mode")
     switcher?.addEventListener("click" ,changeTheme )
-    
+
     const chk = document.getElementById('chk');
 
     chk.addEventListener('change',changeTheme);
 } catch (err) {
-    
+
 }
 
 
@@ -267,7 +266,7 @@ try{
         else{
             htmlTag.dir = "rtl"
         }
-        
+
     }
     const switcherRtl = document.getElementById("switchRtl")
     switcherRtl?.addEventListener("click" ,changeLayout )

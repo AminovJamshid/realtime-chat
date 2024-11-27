@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
-            $table->id();
-            $table->enum('type', ['group', 'contact', 'channel'])->nullable();
-            $table->string('channel')->unique()->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('rooms')) {
+            Schema::create('rooms', function (Blueprint $table) {
+                $table->id();
+                $table->enum('type', ['group', 'contact', 'channel'])->nullable();
+                $table->string('channel')->unique()->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

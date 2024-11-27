@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('sender_id')->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->foreignId('receiver_id')->constrained('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->text('message');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('messages')) {
+            Schema::create('messages', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('sender_id')->constrained('users')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+                $table->foreignId('receiver_id')->constrained('users')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+                $table->text('message');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
